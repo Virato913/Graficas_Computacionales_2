@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GraphicsBuffer.h"
+
 #include <d3d11.h>
 #include <directxmath.h>
 
@@ -14,96 +16,106 @@ private:
 		XMFLOAT4 color;
 	};
 
-	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
+	VertexBuffer<VertexType> myVertices;
+	IndexBuffer<unsigned int> myIndices;
 	int m_vertexCount, m_indexCount;
 
 	bool InitializeBuffers(ID3D11Device* device)
-	{
-		VertexType* vertices;
-		unsigned long* indices;
-		D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-		D3D11_SUBRESOURCE_DATA vertexData, indexData;
-		HRESULT result;
-		
+	{		
 		// Set the number of vertices in the vertex array.
-		m_vertexCount = 3;
+		m_vertexCount = 6;
 
 		// Set the number of indices in the index array.
-		m_indexCount = 3;
+		m_indexCount = 9;
 
 		// Create the vertex array.
-		vertices = new VertexType[m_vertexCount];
-		if (!vertices)
-		{
-			return false;
-		}
+		myVertices.reserve(m_vertexCount);
 
 		// Create the index array.
-		indices = new unsigned long[m_indexCount];
-		if (!indices)
-		{
-			return false;
-		}
-		
+		myIndices.reserve(m_indexCount);
+
+		VertexType* vertices = new VertexType();
+
 		// Load the vertex array with data.
-		vertices[0].position = XMFLOAT3(-0.5f, -0.5f, 0.0f);  // Bottom left.
-		vertices[0].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertices->position = XMFLOAT3(0.0f, sqrt(0.75f), 0.0f);  // Bottom left. 0
+		vertices->color = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+		
+		myVertices.add(*vertices);
 
-		vertices[1].position = XMFLOAT3(0.0f, 0.5f, 0.0f);  // Top middle.
-		vertices[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+		vertices->position = XMFLOAT3(-0.5f, 0.0f, 0.0f);  // Top middle. 1
+		vertices->color = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+		
+		myVertices.add(*vertices);
 
-		vertices[2].position = XMFLOAT3(0.5f, -0.5f, 0.0f);  // Bottom right.
-		vertices[2].color = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+		vertices->position = XMFLOAT3(0.5f, 0.0f, 0.0f);  // Bottom right.2
+		vertices->color = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+		
+		myVertices.add(*vertices);
+
+		vertices->position = XMFLOAT3(-1.0f, -sqrt(0.75f), 0.0f);  // Bottom left. 0
+		vertices->color = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+		
+		myVertices.add(*vertices);
+
+		vertices->position = XMFLOAT3(0.0f, -sqrt(0.75f), 0.0f);  // Top middle. 1
+		vertices->color = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+		
+		myVertices.add(*vertices);
+
+		vertices->position = XMFLOAT3(1.0f, -sqrt(0.75f), 0.0f);  // Bottom right.2
+		vertices->color = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+
+		myVertices.add(*vertices);
+
+		unsigned int* indices = new unsigned int;
 
 		// Load the index array with data.
-		indices[0] = 0;  // Bottom left.
-		indices[1] = 1;  // Top middle.
-		indices[2] = 2;  // Bottom right.
-						 // Set up the description of the static vertex buffer.
-		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
-		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vertexBufferDesc.CPUAccessFlags = 0;
-		vertexBufferDesc.MiscFlags = 0;
-		vertexBufferDesc.StructureByteStride = 0;
+		*indices = 0;  // Bottom left.
 
-		// Give the subresource structure a pointer to the vertex data.
-		vertexData.pSysMem = vertices;
-		vertexData.SysMemPitch = 0;
-		vertexData.SysMemSlicePitch = 0;
+		myIndices.add(*indices);
 
-		// Now create the vertex buffer.
-		result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
-		if (FAILED(result))
-		{
-			return false;
-		}
+		*indices = 2;  // Top middle.
 
-		// Set up the description of the static index buffer.
-		indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
-		indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		indexBufferDesc.CPUAccessFlags = 0;
-		indexBufferDesc.MiscFlags = 0;
-		indexBufferDesc.StructureByteStride = 0;
+		myIndices.add(*indices);
 
-		// Give the subresource structure a pointer to the index data.
-		indexData.pSysMem = indices;
-		indexData.SysMemPitch = 0;
-		indexData.SysMemSlicePitch = 0;
+		*indices = 1;  // Bottom right.
 
-		// Create the index buffer.
-		result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
-		if (FAILED(result))
-		{
-			return false;
-		}
+		myIndices.add(*indices);
+
+		*indices = 1;
+
+		myIndices.add(*indices);
+
+		*indices = 4;  // Bottom right.
+
+		myIndices.add(*indices);
+
+		*indices = 3;
+
+		myIndices.add(*indices);
+
+		*indices = 2;  // Bottom right.
+
+		myIndices.add(*indices);
+
+		*indices = 5;
+
+		myIndices.add(*indices);
+
+		*indices = 4;  // Bottom right.
+
+		myIndices.add(*indices);
+
+		myVertices.createHardwareBuffer(device);
+
+		myIndices.createHardwareBuffer(device);
+
 		// Release the arrays now that the vertex and index buffers have been created and loaded.
 		delete[] vertices;
-		vertices = 0;
+		vertices = nullptr;
 
 		delete[] indices;
-		indices = 0;
+		indices = nullptr;
 
 		return true;
 	}
@@ -111,17 +123,17 @@ private:
 	void ShutdownBuffers()
 	{
 		// Release the index buffer.
-		if (m_indexBuffer)
+		if (myIndices.m_pBuffer)
 		{
-			m_indexBuffer->Release();
-			m_indexBuffer = 0;
+			myIndices.clear();
+			myIndices.m_pBuffer = nullptr;
 		}
 
 		// Release the vertex buffer.
-		if (m_vertexBuffer)
+		if (myVertices.m_pBuffer)
 		{
-			m_vertexBuffer->Release();
-			m_vertexBuffer = 0;
+			myVertices.clear();
+			myVertices.m_pBuffer = nullptr;
 		}
 
 		return;
@@ -138,10 +150,10 @@ private:
 		offset = 0;
 
 		// Set the vertex buffer to active in the input assembler so it can be rendered.
-		deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+		deviceContext->IASetVertexBuffers(0, 1, &myVertices.m_pBuffer, &stride, &offset);
 
 		// Set the index buffer to active in the input assembler so it can be rendered.
-		deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->IASetIndexBuffer(myIndices.m_pBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 		// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -152,8 +164,8 @@ private:
 public:
 	Model()
 	{
-		m_vertexBuffer = 0;
-		m_indexBuffer = 0;
+		myVertices.m_pBuffer = nullptr;
+		myIndices.m_pBuffer = nullptr;
 	}
 
 	~Model()
