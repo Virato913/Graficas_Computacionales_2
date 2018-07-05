@@ -6,6 +6,7 @@
 enum class TEXTURE_TYPE
 {
 	TEXTURE2D,
+	BUFFER,
 	DEPTH
 };
 
@@ -37,6 +38,9 @@ public:
 		case TEXTURE_TYPE::TEXTURE2D:
 
 			break;
+		case TEXTURE_TYPE::BUFFER:
+
+			break;
 		case TEXTURE_TYPE::DEPTH:
 			desc.Width = width;
 			desc.Height = height;
@@ -59,6 +63,11 @@ public:
 			break;
 		}
 		return true;
+	}
+
+	ID3D11Texture2D* getTexture()
+	{
+		return m_Texture;
 	}
 
 private:

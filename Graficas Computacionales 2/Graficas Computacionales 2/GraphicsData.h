@@ -7,6 +7,8 @@
 #include <directxmath.h>
 #include <vector>
 
+#include "Texture.h"
+
 using namespace DirectX;
 using namespace std;
 
@@ -20,13 +22,15 @@ private:
 	ID3D11Device* m_device;
 	ID3D11DeviceContext* m_deviceContext;
 	ID3D11RenderTargetView* m_renderTargetView;
-	ID3D11Texture2D* m_depthStencilBuffer;
+	//ID3D11Texture2D* m_depthStencilBuffer;
 	//ID3D11DepthStencilState* m_depthStencilState;
 	ID3D11DepthStencilView* m_depthStencilView;
 	//ID3D11RasterizerState* m_rasterState;
 	/*XMMATRIX m_projectionMatrix;
 	XMMATRIX m_worldMatrix;
 	XMMATRIX m_orthoMatrix;*/
+
+	Texture m_depthStencilBuffer;
 
 public:
 	GraphicsData()
@@ -35,7 +39,7 @@ public:
 		m_device = 0;
 		m_deviceContext = 0;
 		m_renderTargetView = 0;
-		m_depthStencilBuffer = 0;
+		//m_depthStencilBuffer = 0;
 		m_depthStencilView = 0;
 	}
 
@@ -115,23 +119,28 @@ public:
 			return false;
 		}
 
-		//Creamos la textura de Depth Stencil
-		D3D11_TEXTURE2D_DESC descDepth;
-		memset(&descDepth, 0, sizeof(descDepth));
-		descDepth.Width = width;
-		descDepth.Height = height;
-		descDepth.MipLevels = 1;
-		descDepth.ArraySize = 1;
-		descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		descDepth.SampleDesc.Count = 1;
-		descDepth.SampleDesc.Quality = 0;
-		descDepth.Usage = D3D11_USAGE_DEFAULT;
-		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-		descDepth.CPUAccessFlags = 0;
-		descDepth.MiscFlags = 0;
+		////Creamos la textura de Depth Stencil
+		//D3D11_TEXTURE2D_DESC descDepth;
+		//memset(&descDepth, 0, sizeof(descDepth));
+		//descDepth.Width = width;
+		//descDepth.Height = height;
+		//descDepth.MipLevels = 1;
+		//descDepth.ArraySize = 1;
+		//descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		//descDepth.SampleDesc.Count = 1;
+		//descDepth.SampleDesc.Quality = 0;
+		//descDepth.Usage = D3D11_USAGE_DEFAULT;
+		//descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		//descDepth.CPUAccessFlags = 0;
+		//descDepth.MiscFlags = 0;
 
-		hr = m_device->CreateTexture2D(&descDepth, nullptr, &m_depthStencilBuffer);
+		/*hr = m_device->CreateTexture2D(&descDepth, nullptr, &m_depthStencilBuffer);
 		if (FAILED(hr))
+		{
+			return false;
+		}*/
+
+		if (!m_depthStencilBuffer.createTexture(m_device, TEXTURE_TYPE::DEPTH, width, height))
 		{
 			return false;
 		}
@@ -178,7 +187,7 @@ public:
 		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		descDSV.Texture2D.MipSlice = 0;
 
-		hr = m_device->CreateDepthStencilView(m_depthStencilBuffer, &descDSV, &m_depthStencilView);
+		hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.getTexture(), &descDSV, &m_depthStencilView);
 		if (FAILED(hr))
 		{
 			return false;
@@ -255,10 +264,10 @@ public:
 			m_depthStencilView = 0;
 		}
 
-		if (m_depthStencilBuffer)
+		if (m_depthStencilBuffer.getTexture())
 		{
-			m_depthStencilBuffer->Release();
-			m_depthStencilBuffer = 0;
+			m_depthStencilBuffer.clear();
+			//m_depthStencilBuffer = 0;
 		}
 
 		if (m_renderTargetView)
