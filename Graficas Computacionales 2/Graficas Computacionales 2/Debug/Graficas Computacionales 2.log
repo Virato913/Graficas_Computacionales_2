@@ -3,14 +3,13 @@
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(25): warning C4316: 'DirectX::XMMATRIX': object allocated on the heap may not be aligned 16
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(26): warning C4316: 'DirectX::XMMATRIX': object allocated on the heap may not be aligned 16
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(27): warning C4316: 'DirectX::XMMATRIX': object allocated on the heap may not be aligned 16
+d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(75): warning C4316: 'GraphicsData': object allocated on the heap may not be aligned 16
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(90): warning C4316: 'Camera': object allocated on the heap may not be aligned 16
-  Generating Code...
-  Compiling...
-  Texture.cpp
   Graficas Computacionales 2.cpp
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(25): warning C4316: 'DirectX::XMMATRIX': object allocated on the heap may not be aligned 16
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(26): warning C4316: 'DirectX::XMMATRIX': object allocated on the heap may not be aligned 16
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(27): warning C4316: 'DirectX::XMMATRIX': object allocated on the heap may not be aligned 16
+d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(75): warning C4316: 'GraphicsData': object allocated on the heap may not be aligned 16
 d:\idv 6º\graficas_computacionales_2\graficas computacionales 2\graficas computacionales 2\graphicsapi.h(90): warning C4316: 'Camera': object allocated on the heap may not be aligned 16
   Generating Code...
   Graficas Computacionales 2.vcxproj -> D:\IDV 6º\Graficas_Computacionales_2\Graficas Computacionales 2\Debug\Graficas Computacionales 2.exe

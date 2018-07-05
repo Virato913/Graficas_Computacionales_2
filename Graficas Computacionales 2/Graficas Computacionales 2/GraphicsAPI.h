@@ -32,10 +32,10 @@ private:
 		// Generate the view matrix based on the camera's position.
 		m_Camera->Render();
 
-		//// Get the world, view, and projection matrices from the camera and d3d objects.
-		//m_Data->GetWorldMatrix(*worldMatrix);
-		//m_Camera->GetViewMatrix(*viewMatrix);
-		//m_Data->GetProjectionMatrix(*projectionMatrix);
+		// Get the world, view, and projection matrices from the camera and d3d objects.
+		m_Data->GetWorldMatrix(*worldMatrix);
+		m_Camera->GetViewMatrix(*viewMatrix);
+		m_Data->GetProjectionMatrix(*projectionMatrix);
 
 		// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 		m_Model->Render(m_Data->GetDeviceContext());

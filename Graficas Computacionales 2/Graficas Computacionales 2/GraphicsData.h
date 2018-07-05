@@ -23,12 +23,12 @@ private:
 	ID3D11DeviceContext* m_deviceContext;
 	ID3D11RenderTargetView* m_renderTargetView;
 	//ID3D11Texture2D* m_depthStencilBuffer;
-	//ID3D11DepthStencilState* m_depthStencilState;
+	ID3D11DepthStencilState* m_depthStencilState;
 	ID3D11DepthStencilView* m_depthStencilView;
-	//ID3D11RasterizerState* m_rasterState;
-	/*XMMATRIX m_projectionMatrix;
+	ID3D11RasterizerState* m_rasterState;
+	XMMATRIX m_projectionMatrix;
 	XMMATRIX m_worldMatrix;
-	XMMATRIX m_orthoMatrix;*/
+	XMMATRIX m_orthoMatrix;
 
 	Texture m_depthStencilBuffer;
 
@@ -145,40 +145,40 @@ public:
 			return false;
 		}
 
-		//D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 
-		//// Initialize the description of the stencil state.
-		//ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+		// Initialize the description of the stencil state.
+		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
-		//// Set up the description of the stencil state.
-		//depthStencilDesc.DepthEnable = true;
-		//depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		//depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+		// Set up the description of the stencil state.
+		depthStencilDesc.DepthEnable = true;
+		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-		//depthStencilDesc.StencilEnable = true;
-		//depthStencilDesc.StencilReadMask = 0xFF;
-		//depthStencilDesc.StencilWriteMask = 0xFF;
+		depthStencilDesc.StencilEnable = true;
+		depthStencilDesc.StencilReadMask = 0xFF;
+		depthStencilDesc.StencilWriteMask = 0xFF;
 
-		//// Stencil operations if pixel is front-facing.
-		//depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		//depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		//depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		//depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		// Stencil operations if pixel is front-facing.
+		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-		//// Stencil operations if pixel is back-facing.
-		//depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		//depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		//depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		//depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		// Stencil operations if pixel is back-facing.
+		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-		//// Create the depth stencil state.
-		//hr = m_device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
-		//if (FAILED(hr))
-		//{
-		//	return false;
-		//}
+		// Create the depth stencil state.
+		hr = m_device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+		if (FAILED(hr))
+		{
+			return false;
+		}
 
-		//m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+		m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
 		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
 		memset(&descDSV, 0, sizeof(descDSV));
@@ -195,29 +195,29 @@ public:
 
 		m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-		//D3D11_RASTERIZER_DESC rasterDesc;
+		D3D11_RASTERIZER_DESC rasterDesc;
 
-		//// Setup the raster description which will determine how and what polygons will be drawn.
-		//rasterDesc.AntialiasedLineEnable = false;
-		//rasterDesc.CullMode = D3D11_CULL_BACK;
-		//rasterDesc.DepthBias = 0;
-		//rasterDesc.DepthBiasClamp = 0.0f;
-		//rasterDesc.DepthClipEnable = true;
-		//rasterDesc.FillMode = D3D11_FILL_SOLID;
-		//rasterDesc.FrontCounterClockwise = false;
-		//rasterDesc.MultisampleEnable = false;
-		//rasterDesc.ScissorEnable = false;
-		//rasterDesc.SlopeScaledDepthBias = 0.0f;
+		// Setup the raster description which will determine how and what polygons will be drawn.
+		rasterDesc.AntialiasedLineEnable = false;
+		rasterDesc.CullMode = D3D11_CULL_BACK;
+		rasterDesc.DepthBias = 0;
+		rasterDesc.DepthBiasClamp = 0.0f;
+		rasterDesc.DepthClipEnable = true;
+		rasterDesc.FillMode = D3D11_FILL_SOLID;
+		rasterDesc.FrontCounterClockwise = false;
+		rasterDesc.MultisampleEnable = false;
+		rasterDesc.ScissorEnable = false;
+		rasterDesc.SlopeScaledDepthBias = 0.0f;
 
-		//// Create the rasterizer state from the description we just filled out.
-		//hr = m_device->CreateRasterizerState(&rasterDesc, &m_rasterState);
-		//if (FAILED(hr))
-		//{
-		//	return false;
-		//}
+		// Create the rasterizer state from the description we just filled out.
+		hr = m_device->CreateRasterizerState(&rasterDesc, &m_rasterState);
+		if (FAILED(hr))
+		{
+			return false;
+		}
 
-		//// Now set the rasterizer state.
-		//m_deviceContext->RSSetState(m_rasterState);
+		// Now set the rasterizer state.
+		m_deviceContext->RSSetState(m_rasterState);
 
 		D3D11_VIEWPORT viewport;
 
@@ -239,14 +239,14 @@ public:
 		fieldOfView = 3.141592654f / 4.0f;
 		screenAspect = (float)width / (float)height;
 
-		//// Create the projection matrix for 3D rendering.
-		//m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
+		// Create the projection matrix for 3D rendering.
+		m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 
-		//// Initialize the world matrix to the identity matrix.
-		//m_worldMatrix = XMMatrixIdentity();
+		// Initialize the world matrix to the identity matrix.
+		m_worldMatrix = XMMatrixIdentity();
 
-		//// Create an orthographic projection matrix for 2D rendering.
-		//m_orthoMatrix = XMMatrixOrthographicLH((float)width, (float)height, screenNear, screenDepth);
+		// Create an orthographic projection matrix for 2D rendering.
+		m_orthoMatrix = XMMatrixOrthographicLH((float)width, (float)height, screenNear, screenDepth);
 
 		return true;
 	}
@@ -299,7 +299,7 @@ public:
 
 	void BeginScene()
 	{
-		float color[4] = { 0.0f,0.0f,0.0f,1.0f };
+		float color[4] = { 0.4f,0.4f,1.0f,1.0f };
 		m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 
 		// Clear the depth buffer.
@@ -321,7 +321,7 @@ public:
 		return m_deviceContext;
 	}
 
-	/*void GetProjectionMatrix(XMMATRIX& projectionMatrix)
+	void GetProjectionMatrix(XMMATRIX& projectionMatrix)
 	{
 		projectionMatrix = m_projectionMatrix;
 		return;
@@ -337,6 +337,6 @@ public:
 	{
 		orthoMatrix = m_orthoMatrix;
 		return;
-	}*/
+	}
 };
 
